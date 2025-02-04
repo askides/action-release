@@ -72,7 +72,7 @@ jobs:
       - name: Generate Changelog
         id: changelog
         run: |
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^)
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0)
           REPO="${GITHUB_REPOSITORY}"
           {
             echo "CHANGELOG<<EOF"
