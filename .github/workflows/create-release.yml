@@ -50,22 +50,47 @@ jobs:
 
           echo "version=${new_version}" >> $GITHUB_OUTPUT
 
-      - name: Generate changelog
+      - name: Generate Changelog
         id: changelog
-        uses: mikepenz/release-changelog-builder-action@v4
-        with:
-          fromTag: ${{ steps.get_latest_tag.outputs.latest_tag }}
-          toTag: HEAD
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^)
+          REPO="${GITHUB_REPOSITORY}"
+          {
+            echo "CHANGELOG<<EOF"
+            echo "# Changelog"
+            echo ""
+            git log --pretty=format:"- %s (${REPO}@%h)" ${PREVIOUS_TAG}..HEAD
+            echo ""
+            echo "EOF"
+          } >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.next_version.outputs.version }}
-          name: Release v${{ steps.next_version.outputs.version }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          tag_name: v${{ teps.next_version.outputs.version }}
+          release_name: v${{ steps.next_version.outputs.version }}
+          body: ${{ env.CHANGELOG }}
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Generate changelog
+      #   id: changelog
+      #   uses: mikepenz/release-changelog-builder-action@v4
+      #   with:
+      #     fromTag: ${{ steps.get_latest_tag.outputs.latest_tag }}
+      #     toTag: HEAD
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Create Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     tag_name: v${{ steps.next_version.outputs.version }}
+      #     name: v${{ steps.next_version.outputs.version }}
+      #     body: ${{ steps.changelog.outputs.changelog }}
+      #     draft: false
+      #     prerelease: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
