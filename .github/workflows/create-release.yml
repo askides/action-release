@@ -74,12 +74,15 @@ jobs:
         run: |
           PREVIOUS_TAG=$(git describe --tags --abbrev=0)
           REPO="${GITHUB_REPOSITORY}"
+          NEW_TAG="v${{ steps.next_version.outputs.version }}"
           {
             echo "CHANGELOG<<EOF"
-            echo "# Changelog"
+            echo "## What's Changed"
             echo ""
             git log --pretty=format:"- %s (${REPO}@%h)" ${PREVIOUS_TAG}..HEAD
             echo ""
+            echo ""
+            echo "[Full Changelog](https://github.com/${REPO}/compare/${PREVIOUS_TAG}...${NEW_TAG})"
             echo "EOF"
           } >> $GITHUB_ENV
 
