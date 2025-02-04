@@ -42,8 +42,6 @@ jobs:
           enable_prerelease_mode: false
           major_pattern: "(MAJOR)"
           minor_pattern: "(MINOR)"
-          patch_pattern: "(PATCH)"
-          force_bump_patch_version: false
 
       - name: Generate changelog
         id: changelog
