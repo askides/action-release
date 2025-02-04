@@ -79,10 +79,10 @@ jobs:
             echo "CHANGELOG<<EOF"
             echo "## What's Changed"
             echo ""
-            git log --pretty=format:"- %s (${REPO}@%h)" ${PREVIOUS_TAG}..HEAD
+            git log --pretty=format:"- %s (${REPO}#%h)" ${PREVIOUS_TAG}..HEAD
             echo ""
             echo ""
-            echo "[Full Changelog](https://github.com/${REPO}/compare/${PREVIOUS_TAG}...${NEW_TAG})"
+            echo "**Full Changelog**: \`${PREVIOUS_TAG}...${NEW_TAG}\` (https://github.com/${REPO}/compare/${PREVIOUS_TAG}...${NEW_TAG})"
             echo "EOF"
           } >> $GITHUB_ENV
 
