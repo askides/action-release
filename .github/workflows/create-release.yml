@@ -59,14 +59,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Debug build output
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Listing .output directory:"
-          ls -la .output/ || echo ".output directory not found"
-          echo "Listing current directory:"
-          ls -la
-
       - name: Create zip archive
         run: |
           zip -r extension-build.zip .output/
@@ -167,7 +159,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.next_version.outputs.version }}
-          release_name: v${{ steps.next_version.outputs.version }}
+          name: v${{ steps.next_version.outputs.version }}
           body: ${{ env.CHANGELOG }}
           files: extension-build.zip
           draft: false
