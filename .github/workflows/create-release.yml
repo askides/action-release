@@ -59,6 +59,14 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Debug build output
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing .output directory:"
+          ls -la .output/ || echo ".output directory not found"
+          echo "Listing current directory:"
+          ls -la
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
